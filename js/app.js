@@ -176,13 +176,15 @@ function setupMetricsCounter() {
           let current = 0;
           const step = target / 40;
 
+          const isIntegerTarget = Number.isInteger(target);
           const timer = setInterval(() => {
             current += step;
             if (current >= target) {
               current = target;
               clearInterval(timer);
             }
-            el.textContent = `${prefix}${current % 1 === 0 ? current.toFixed(0) : current.toFixed(1)}${suffix}`;
+            const displayVal = isIntegerTarget ? Math.round(current) : current.toFixed(1);
+            el.textContent = `${prefix}${displayVal}${suffix}`;
           }, 30);
         });
       }
