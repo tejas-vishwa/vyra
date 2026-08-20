@@ -1,7 +1,7 @@
 /* VYRA - Interactive India Smart Grid Deployment Map */
 const indiaNodesData = {
   delhi: {
-    name: 'Delhi NCR Smart Zone',
+    name: 'Delhi NCR Pilot Zone',
     discom: 'TPDDL & BSES Rajdhani',
     transformers: '1,420 Active Units',
     health: '98.4%',
@@ -9,7 +9,7 @@ const indiaNodesData = {
     status: 'Optimal'
   },
   mumbai: {
-    name: 'Mumbai Coastal Grid',
+    name: 'Mumbai Coastal Pilot Zone',
     discom: 'Adani Electricity & BEST',
     transformers: '1,890 Active Units',
     health: '99.1%',
@@ -17,7 +17,7 @@ const indiaNodesData = {
     status: 'Optimal'
   },
   bengaluru: {
-    name: 'Bengaluru Tech Corridor',
+    name: 'Bengaluru Tech Pilot Zone',
     discom: 'BESCOM Zone 1 & 2',
     transformers: '2,150 Active Units',
     health: '97.9%',
@@ -25,7 +25,7 @@ const indiaNodesData = {
     status: 'Optimal'
   },
   varanasi: {
-    name: 'Varanasi Smart Infrastructure',
+    name: 'Varanasi PuVVNL Pilot Zone',
     discom: 'PuVVNL Discom',
     transformers: '840 Active Units',
     health: '96.5%',
@@ -33,7 +33,7 @@ const indiaNodesData = {
     status: 'Predictive Monitoring'
   },
   kolkata: {
-    name: 'Kolkata Metro Power Grid',
+    name: 'Kolkata Metro Pilot Zone',
     discom: 'CESC & WBSEDCL',
     transformers: '1,260 Active Units',
     health: '98.0%',
@@ -41,7 +41,7 @@ const indiaNodesData = {
     status: 'Optimal'
   },
   chennai: {
-    name: 'Chennai Energy Cluster',
+    name: 'Chennai Energy Pilot Zone',
     discom: 'TANGEDCO North',
     transformers: '1,510 Active Units',
     health: '98.7%',
@@ -49,7 +49,7 @@ const indiaNodesData = {
     status: 'Optimal'
   },
   hyderabad: {
-    name: 'Hyderabad Cyber Grid',
+    name: 'Hyderabad Cyber Pilot Zone',
     discom: 'TSSPDCL Central',
     transformers: '1,380 Active Units',
     health: '99.0%',
@@ -78,7 +78,6 @@ function setupIndiaMapInteractivity() {
       if (cardHealth) cardHealth.textContent = data.health;
       if (cardLosses) cardLosses.textContent = data.lossesSaved;
 
-      // Glow effect on hovered SVG node
       nodeElements.forEach(n => n.classList.remove('active-node'));
       e.currentTarget.classList.add('active-node');
     });
