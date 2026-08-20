@@ -4,6 +4,7 @@ class VyraDashboard {
     this.chart = null;
     this.activeMetric = 'voltage';
     this.isAnomalyActive = false;
+    this.isUserFeedMode = false;
     this.telemetryHistory = {
       labels: [],
       voltage: [],
@@ -16,6 +17,7 @@ class VyraDashboard {
     this.initChart();
     this.startLiveStream();
     this.setupEventListeners();
+    this.setupUserInputListeners();
   }
 
   initChart() {
@@ -108,44 +110,49 @@ class VyraDashboard {
     }
   }
 
-  updateChartDataset() {
-    if (!this.chart) return;
+  setupUserInputListeners() {
+    const toggleBtn = document.getElementById('btnToggleFeedMode');
+    const calcBtn = document.getElementById('btnCalculateUserHealth');
+    const inputs = ['inputTemp', 'inputVib', 'inputVolt', 'inputCurr', 'inputDga', 'inputMoisture'];
 
-    let label = 'Voltage (V)';
-    let color = '#10b981';
-    let bgColor = 'rgba(16, 185, 129, 0.12)';
-    let data = this.telemetryHistory.voltage;
-
-    if (this.activeMetric === 'temperature') {
-      label = 'Temperature (°C)';
-      color = '#f59e0b';
-      bgColor = 'rgba(245, 158, 11, 0.12)';
-      data = this.telemetryHistory.temperature;
-    } else if (this.activeMetric === 'vibration') {
-      label = 'Vibration (mm/s)';
-      color = '#3b82f6';
-      bgColor = 'rgba(59, 130, 246, 0.12)';
-      data = this.telemetryHistory.vibration;
-    } else if (this.activeMetric === 'current') {
-      label = 'Current (A)';
-      color = '#06b6d4';
-      bgColor = 'rgba(6, 182, 212, 0.12)';
-      data = this.telemetryHistory.current;
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        this.isUserFeedMode = !this.isUserFeedMode;
+        if (this.isUserFeedMode) {
+          toggleBtn.className = 'px-3 py-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/20 text-cyan-300 font-bold transition-all flex items-center gap-2';
+          toggleBtn.innerHTML = `<i class="fa-solid fa-keyboard"></i> <span>User Feed Mode: Active</span>`;
+          this.calculateUserFeedHealth();
+        } else {
+          toggleBtn.className = 'px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/20 text-emerald-300 font-bold hover:bg-emerald-500/30 transition-all flex items-center gap-2';
+          toggleBtn.innerHTML = `<i class="fa-solid fa-wifi"></i> <span>Live IoT Stream Mode</span>`;
+        }
+      });
     }
 
-    this.chart.data.datasets[0].label = label;
-    this.chart.data.datasets[0].borderColor = color;
-    this.chart.data.datasets[0].backgroundColor = bgColor;
-    this.chart.data.datasets[0].pointBackgroundColor = color;
-    this.chart.data.datasets[0].data = data;
-    this.chart.update();
+    if (calcBtn) {
+      calcBtn.addEventListener('click', () => {
+        this.calculateUserFeedHealth();
+      });
+    }
+
+    // Auto calculate on user typing/selecting when in manual mode
+    inputs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          if (this.isUserFeedMode) {
+            this.calculateUserFeedHealth();
+          }
+        });
+      }
+    });
   }
 
   /**
    * MATHEMATICAL TRANSFORMER HEALTH INDEX (HI) FORMULA
-   * HI = 100 - (P_T + P_V + P_dV + P_I)
+   * HI = 100 - (P_T + P_V + P_dV + P_I + P_DGA + P_Moisture)
    */
-  calculateHealthIndex(temp, vib, volt, curr) {
+  calculateHealthIndex(temp, vib, volt, curr, pDga = 0, pMoisture = 0) {
     // 1. Temperature Penalty Factor (P_T)
     let pT = 0;
     if (temp > 50) {
@@ -168,9 +175,9 @@ class VyraDashboard {
       pI = Math.pow((curr - 140) / 60, 1.5) * 25;
     }
 
-    const totalPenalty = pT + pV + pdV + pI;
+    const totalPenalty = pT + pV + pdV + pI + pDga + pMoisture;
     let healthIndex = 100 - totalPenalty;
-    healthIndex = Math.max(5, Math.min(100, healthIndex));
+    healthIndex = Math.max(0, Math.min(100, healthIndex));
 
     return {
       healthIndex: parseFloat(healthIndex.toFixed(1)),
@@ -178,12 +185,51 @@ class VyraDashboard {
       pV: parseFloat(pV.toFixed(1)),
       pdV: parseFloat(pdV.toFixed(1)),
       pI: parseFloat(pI.toFixed(1)),
+      pDga: parseFloat(pDga.toFixed(1)),
+      pMoisture: parseFloat(pMoisture.toFixed(1)),
       totalPenalty: parseFloat(totalPenalty.toFixed(1))
     };
   }
 
+  calculateUserFeedHealth() {
+    const temp = parseFloat(document.getElementById('inputTemp')?.value || 48.5);
+    const vib = parseFloat(document.getElementById('inputVib')?.value || 1.24);
+    const volt = parseFloat(document.getElementById('inputVolt')?.value || 238.4);
+    const curr = parseFloat(document.getElementById('inputCurr')?.value || 142.0);
+    const pDga = parseFloat(document.getElementById('inputDga')?.value || 0);
+    const pMoisture = parseFloat(document.getElementById('inputMoisture')?.value || 0);
+
+    const mathResult = this.calculateHealthIndex(temp, vib, volt, curr, pDga, pMoisture);
+
+    // Push calculation step to telemetry history
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    this.telemetryHistory.labels.push(timeStr);
+    this.telemetryHistory.voltage.push(volt);
+    this.telemetryHistory.temperature.push(temp);
+    this.telemetryHistory.vibration.push(vib);
+    this.telemetryHistory.current.push(curr);
+
+    if (this.telemetryHistory.labels.length > this.maxDataPoints) {
+      this.telemetryHistory.labels.shift();
+      this.telemetryHistory.voltage.shift();
+      this.telemetryHistory.temperature.shift();
+      this.telemetryHistory.vibration.shift();
+      this.telemetryHistory.current.shift();
+    }
+
+    this.updateTelemetryValues(volt, temp, vib, curr, mathResult);
+    if (this.chart) this.chart.update();
+
+    // Alert notification for user feed calculation
+    this.injectAlert(`⚙ User Feed Math Calculated — Health Index: ${mathResult.healthIndex}% (Temp: ${temp}°C, Vib: ${vib}mm/s, Volt: ${volt}V)`, mathResult.healthIndex < 65 ? 'rose' : 'emerald');
+  }
+
   startLiveStream() {
     setInterval(() => {
+      if (this.isUserFeedMode) return; // Skip auto ticks in manual user feed mode
+
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
@@ -222,10 +268,19 @@ class VyraDashboard {
         this.telemetryHistory.current.shift();
       }
 
-      // Compute mathematical health index from live telemetry data!
       const mathResult = this.calculateHealthIndex(nextTemp, nextVib, nextVolt, nextCurr);
 
-      // Update UI displays
+      // Sync form input fields with live stream
+      const elInputTemp = document.getElementById('inputTemp');
+      const elInputVib = document.getElementById('inputVib');
+      const elInputVolt = document.getElementById('inputVolt');
+      const elInputCurr = document.getElementById('inputCurr');
+
+      if (elInputTemp) elInputTemp.value = nextTemp.toFixed(1);
+      if (elInputVib) elInputVib.value = nextVib.toFixed(2);
+      if (elInputVolt) elInputVolt.value = nextVolt.toFixed(1);
+      if (elInputCurr) elInputCurr.value = nextCurr.toFixed(1);
+
       this.updateTelemetryValues(nextVolt, nextTemp, nextVib, nextCurr, mathResult);
       if (this.chart) this.chart.update('none');
     }, 2000);
@@ -252,7 +307,6 @@ class VyraDashboard {
       if (rulText) rulText.textContent = `${mathResult.healthIndex}%`;
 
       if (rulCircle) {
-        // SVG circle dasharray = 283
         const offset = 283 * (1 - mathResult.healthIndex / 100);
         rulCircle.style.strokeDashoffset = `${offset}`;
       }
@@ -269,7 +323,7 @@ class VyraDashboard {
       }
 
       if (formulaBreakdown) {
-        formulaBreakdown.innerHTML = `P<sub>T</sub>=${mathResult.pT}, P<sub>V</sub>=${mathResult.pV}, P<sub>ΔV</sub>=${mathResult.pdV}, P<sub>I</sub>=${mathResult.pI} (Total Penalty: ${mathResult.totalPenalty}%)`;
+        formulaBreakdown.innerHTML = `P<sub>T</sub>=${mathResult.pT}, P<sub>V</sub>=${mathResult.pV}, P<sub>ΔV</sub>=${mathResult.pdV}, P<sub>I</sub>=${mathResult.pI}, P<sub>DGA</sub>=${mathResult.pDga}, P<sub>Moi</sub>=${mathResult.pMoisture} (Total Loss: ${mathResult.totalPenalty}%)`;
       }
 
       if (statusText) {
