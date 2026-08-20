@@ -1,9 +1,9 @@
-/* VYRA - Core Application JavaScript */
+/* VYRA - Core Application & Tabbed SPA Navigation JavaScript */
 document.addEventListener('DOMContentLoaded', () => {
   setupNavbar();
+  setupTabNavigation();
   setupModals();
   setupMetricsCounter();
-  setupSmoothScroll();
 });
 
 // Glassmorphism Navbar Scroll Effect
@@ -27,6 +27,62 @@ function setupNavbar() {
       mobileMenu.classList.toggle('hidden');
     });
   }
+}
+
+// Tabbed SPA Navigation
+function setupTabNavigation() {
+  const tabBtns = document.querySelectorAll('.nav-tab-btn');
+  const tabViews = document.querySelectorAll('.tab-view');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetTabId = btn.dataset.tab;
+
+      // Update button styling
+      tabBtns.forEach(b => {
+        b.classList.remove('text-emerald-400', 'bg-emerald-500/10', 'border-emerald-500/30', 'font-bold');
+        b.classList.add('text-slate-300', 'hover:text-white', 'border-transparent');
+      });
+
+      btn.classList.add('text-emerald-400', 'bg-emerald-500/10', 'border-emerald-500/30', 'font-bold');
+      btn.classList.remove('text-slate-300', 'hover:text-white', 'border-transparent');
+
+      // Switch tab views
+      tabViews.forEach(view => {
+        if (view.id === targetTabId) {
+          view.classList.remove('hidden');
+          view.classList.add('block');
+        } else {
+          view.classList.add('hidden');
+          view.classList.remove('block');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Close mobile drawer if open
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+
+      // Re-trigger Chart.js resize if command center tab is opened
+      if (targetTabId === 'tab-command' && window.vyraDashboard && window.vyraDashboard.chart) {
+        setTimeout(() => window.vyraDashboard.chart.resize(), 150);
+      }
+    });
+  });
+
+  // Support CTA buttons linking to tabs
+  document.querySelectorAll('.link-to-tab').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetTabId = btn.dataset.tab;
+      const targetNavBtn = document.querySelector(`.nav-tab-btn[data-tab="${targetTabId}"]`);
+      if (targetNavBtn) targetNavBtn.click();
+    });
+  });
 }
 
 // Modal Dialogs Handling
@@ -133,34 +189,6 @@ function setupMetricsCounter() {
     });
   }, { threshold: 0.3 });
 
-  const metricsSection = document.getElementById('impact');
+  const metricsSection = document.getElementById('tab-impact');
   if (metricsSection) observer.observe(metricsSection);
-}
-
-// Smooth Scrolling
-function setupSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        const headerOffset = 90;
-        const elementPosition = targetEl.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-
-        // Close mobile menu if open
-        const mobileMenu = document.getElementById('mobileMenu');
-        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-          mobileMenu.classList.add('hidden');
-        }
-      }
-    });
-  });
 }
