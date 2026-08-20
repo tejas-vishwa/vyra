@@ -364,7 +364,7 @@ class VyraDashboard {
         btn.innerHTML = `<i class="fa-solid fa-bolt-lightning"></i> Simulate Grid Anomaly / Theft`;
         btn.className = 'px-4 py-2 text-xs font-semibold rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition-all';
       }
-      this.injectAlert('✓ Grid parameters normalized — AI Engine re-established baseline balance', 'emerald');
+      this.injectAlert('✓ Grid parameters normalized — Smart Intelligence Engine re-established baseline balance', 'emerald');
     }
   }
 
