@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VYRA — AI-Powered Smart Grid & Predictive Transformer Health</title>
+  <meta name="description" content="VYRA - AI-Powered Smart Grid Monitoring & Predictive Transformer Health System by Team Neuro Forge. Powering India's Future with Artificial Intelligence.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#030712',
+              card: 'rgba(15, 23, 42, 0.65)',
+              green: '#10b981',
+              neon: '#00ff9d',
+              blue: '#3b82f6',
+              cyan: '#06b6d4'
+            }
+          },
+          fontFamily: {
+            syne: ['Syne', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#030712] text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-black">
+
+  <!-- ==================== STICKY NAVIGATION ==================== -->
+  <nav id="mainNav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-nav py-5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-400 p-[1px] shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-all">
+          <div class="w-full h-full bg-[#030712] rounded-[11px] flex items-center justify-center">
+            <i class="fa-solid fa-bolt-lightning text-emerald-400 text-lg group-hover:scale-110 transition-transform"></i>
+          </div>
+        </div>
+        <div>
+          <span class="font-syne font-extrabold text-2xl tracking-wider text-white">VYRA</span>
+          <span class="block text-[9px] tracking-widest uppercase text-emerald-400 font-mono -mt-1">Neuro Forge AI</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+        <a href="#hero" class="hover:text-emerald-400 transition-colors">Home</a>
+        <a href="#challenges" class="hover:text-emerald-400 transition-colors">Challenges</a>
+        <a href="#architecture" class="hover:text-emerald-400 transition-colors">How It Works</a>
+        <a href="#dashboard" class="hover:text-emerald-400 transition-colors">Command Center</a>
+        <a href="#impact" class="hover:text-emerald-400 transition-colors">Impact</a>
+        <a href="#future" class="hover:text-emerald-400 transition-colors">Future Vision</a>
+      </div>
+
+      <!-- Live Status Pill & CTAs -->
+      <div class="hidden lg:flex items-center gap-4">
+        <div class="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2 text-xs font-mono text-emerald-400">
+          <span class="led-indicator led-green"></span>
+          <span>GRID LIVE</span>
+        </div>
+        <button class="btn-primary trigger-request-demo">
+          <span>Request Demo</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button id="mobileMenuBtn" class="md:hidden text-slate-300 hover:text-white text-xl p-2">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileMenu" class="hidden md:hidden glass-panel mx-4 mt-3 p-5 space-y-4 text-sm font-medium">
+      <a href="#hero" class="block text-slate-300 hover:text-emerald-400 py-1">Home</a>
+      <a href="#challenges" class="block text-slate-300 hover:text-emerald-400 py-1">Challenges</a>
+      <a href="#architecture" class="block text-slate-300 hover:text-emerald-400 py-1">How It Works</a>
+      <a href="#dashboard" class="block text-slate-300 hover:text-emerald-400 py-1">Command Center</a>
+      <a href="#impact" class="block text-slate-300 hover:text-emerald-400 py-1">Impact</a>
+      <a href="#future" class="block text-slate-300 hover:text-emerald-400 py-1">Future Vision</a>
+      <div class="pt-2 border-t border-slate-800 flex flex-col gap-3">
+        <button class="btn-primary w-full justify-center trigger-request-demo">Request Demo</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== 1. HERO SECTION ==================== -->
+  <section id="hero" class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden min-h-[90vh] flex items-center">
+    
+    <!-- Dynamic Canvas Grid Background -->
+    <canvas id="heroCanvas" class="absolute inset-0 w-full h-full pointer-events-auto z-0 opacity-80"></canvas>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      
+      <!-- Innovation Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-emerald-500/30 text-xs sm:text-sm font-medium text-emerald-400 mb-8 animate-fade-in">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="text-slate-300">Developed by</span>
+        <span class="font-bold text-white font-syne">Team Neuro Forge</span>
+        <span class="text-slate-500">|</span>
+        <span class="text-slate-400 text-xs">Ashoka Institute of Technology & Management</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-syne font-extrabold text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.1] mb-6">
+        <span class="block text-white">VYRA</span>
+        <span class="block text-gradient-multi text-3xl sm:text-5xl md:text-6xl mt-2 font-bold">
+          AI-Powered Smart Grid & Transformer Health
+        </span>
+      </h1>
+
+      <!-- Tagline -->
+      <p class="max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl text-slate-300 font-light mb-10 leading-relaxed">
+        “Powering India’s Future with Artificial Intelligence”
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-16">
+        <button class="btn-primary text-base py-3.5 px-8 w-full sm:w-auto justify-center trigger-request-demo">
+          <i class="fa-solid fa-paper-plane"></i>
+          <span>Request Demo</span>
+        </button>
+        <a href="#dashboard" class="btn-secondary text-base py-3.5 px-8 w-full sm:w-auto justify-center">
+          <i class="fa-solid fa-chart-line text-emerald-400"></i>
+          <span>View Dashboard</span>
+        </a>
+      </div>
+
+      <!-- Interactive Grid Node Visual Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto text-left">
+        <div class="glass-panel p-4 border-slate-800/80 hover:border-emerald-500/40 transition-all">
+          <div class="text-emerald-400 mb-2"><i class="fa-solid fa-microchip text-xl"></i></div>
+          <div class="text-xs text-slate-400 uppercase font-mono">IoT Telemetry</div>
+          <div class="text-sm font-bold text-slate-200 mt-1">Multi-Sensor Mesh</div>
+        </div>
+        <div class="glass-panel p-4 border-slate-800/80 hover:border-blue-500/40 transition-all">
+          <div class="text-blue-400 mb-2"><i class="fa-solid fa-brain text-xl"></i></div>
+          <div class="text-xs text-slate-400 uppercase font-mono">AI Processing</div>
+          <div class="text-sm font-bold text-slate-200 mt-1">Predictive RUL Model</div>
+        </div>
+        <div class="glass-panel p-4 border-slate-800/80 hover:border-cyan-500/40 transition-all">
+          <div class="text-cyan-400 mb-2"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+          <div class="text-xs text-slate-400 uppercase font-mono">Grid Defense</div>
+          <div class="text-sm font-bold text-slate-200 mt-1">AT&C Loss Detection</div>
+        </div>
+        <div class="glass-panel p-4 border-slate-800/80 hover:border-amber-500/40 transition-all">
+          <div class="text-amber-400 mb-2"><i class="fa-solid fa-bell text-xl"></i></div>
+          <div class="text-xs text-slate-400 uppercase font-mono">Alert System</div>
+          <div class="text-sm font-bold text-slate-200 mt-1">Sub-Second Dispatch</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 7. LIVE SYSTEM STATUS BAR ==================== -->
+  <section class="py-6 border-y border-slate-800/80 bg-slate-950/60 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
+        <div class="flex items-center gap-3 p-3 rounded-lg glass-panel">
+          <span class="led-indicator led-green"></span>
+          <div>
+            <span class="text-slate-400 block text-[10px]">SYSTEM CORE</span>
+            <span class="text-emerald-400 font-bold">VYRA AI Engine — Online</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-lg glass-panel">
+          <span class="led-indicator led-green"></span>
+          <div>
+            <span class="text-slate-400 block text-[10px]">TELEMETRY</span>
+            <span class="text-emerald-400 font-bold">IoT Network — Connected</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-lg glass-panel">
+          <span class="led-indicator led-blue"></span>
+          <div>
+            <span class="text-slate-400 block text-[10px]">COMPUTE LAYER</span>
+            <span class="text-blue-400 font-bold">Cloud/Edge — Active</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-lg glass-panel">
+          <span class="led-indicator led-green"></span>
+          <div>
+            <span class="text-slate-400 block text-[10px]">GRID HEALTH</span>
+            <span class="text-cyan-400 font-bold">Grid Monitoring — Live</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 2. KEY CHALLENGES SOLVED ==================== -->
+  <section id="challenges" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Critical Infrastructure Solutions</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-bold text-white mt-4 mb-4">Key Challenges Solved</h2>
+        <p class="text-slate-400 text-base sm:text-lg">Replacing outdated reactive practices with proactive AI intelligence to protect Indian power distribution infrastructure.</p>
+      </div>
+
+      <!-- 4 Feature Cards -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Card 1 -->
+        <div class="glass-panel p-6 relative group overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <h3 class="font-syne text-xl font-bold text-white mb-3">Transformer Failures</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            AI continuously monitors transformer thermal and vibration telemetry, identifying abnormal degradation patterns before catastrophic failure occurs.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-panel p-6 relative group overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+          <h3 class="font-syne text-xl font-bold text-white mb-3">High AT&C Losses</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Monitors energy flow across distribution feeders in real-time, pinpointing technical and commercial losses across DISCOM supply lines.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-panel p-6 relative group overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all"></div>
+          <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-user-ninja"></i>
+          </div>
+          <h3 class="font-syne text-xl font-bold text-white mb-3">Electricity Theft</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Employs energy-balance differential algorithms and machine learning anomaly detection to isolate illegal hookups and tampered metering.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="glass-panel p-6 relative group overflow-hidden">
+          <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all"></div>
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3 class="font-syne text-xl font-bold text-white mb-3">Delayed Fault Detection</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Real-time telemetry and sub-second alert routing notify DISCOM control rooms instantly, drastically shortening power outage durations.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. HOW VYRA WORKS — SYSTEM ARCHITECTURE ==================== -->
+  <section id="architecture" class="py-24 bg-slate-950/40 relative border-t border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">End-to-End Intelligence Pipeline</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-bold text-white mt-4 mb-4">How VYRA Works</h2>
+        <p class="text-slate-400 text-base sm:text-lg">Seamless integration of IoT hardware, secure transmission, deep learning prediction, and actionable dashboards.</p>
+      </div>
+
+      <!-- 4-Stage Architecture Flow Diagram -->
+      <div class="grid md:grid-cols-4 gap-6 relative">
+        
+        <!-- Animated Connecting Energy Pulse SVG Line behind cards -->
+        <div class="hidden md:block absolute top-1/2 left-0 right-0 -translate-y-1/2 z-0 px-12 pointer-events-none">
+          <svg class="w-full h-8" viewBox="0 0 1000 30" fill="none">
+            <path d="M 0 15 L 1000 15" stroke="rgba(16, 185, 129, 0.2)" stroke-width="2" />
+            <path d="M 0 15 L 1000 15" stroke="#00ff9d" stroke-width="2" class="flow-line" />
+          </svg>
+        </div>
+
+        <!-- Stage 1 -->
+        <div class="glass-panel p-6 relative z-10 text-center border-emerald-500/30">
+          <div class="w-8 h-8 rounded-full bg-emerald-500 text-black font-extrabold text-sm flex items-center justify-center mx-auto mb-4 font-mono shadow-lg shadow-emerald-500/30">1</div>
+          <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl mx-auto mb-4">
+            <i class="fa-solid fa-microchip"></i>
+          </div>
+          <h3 class="font-syne text-lg font-bold text-white mb-2">IoT Sensors</h3>
+          <p class="text-slate-400 text-xs mb-4">High-precision field data acquisition:</p>
+          <ul class="text-xs text-slate-300 space-y-1.5 font-mono text-left bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Voltage (V)</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Current (A)</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Temperature (°C)</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Vibration (mm/s)</li>
+          </ul>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="glass-panel p-6 relative z-10 text-center border-blue-500/30">
+          <div class="w-8 h-8 rounded-full bg-blue-500 text-black font-extrabold text-sm flex items-center justify-center mx-auto mb-4 font-mono shadow-lg shadow-blue-500/30">2</div>
+          <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-2xl mx-auto mb-4">
+            <i class="fa-solid fa-wifi"></i>
+          </div>
+          <h3 class="font-syne text-lg font-bold text-white mb-2">Data Transmission</h3>
+          <p class="text-slate-400 text-xs mb-4">Ultra-secure telemetry pipeline:</p>
+          <div class="text-xs text-slate-300 font-mono text-left bg-slate-900/60 p-3 rounded-lg border border-slate-800 space-y-1">
+            <div class="text-blue-400 font-bold">Edge-to-Cloud Link</div>
+            <div class="text-slate-400 text-[11px]">Low-latency Cellular / LoRaWAN MQTT encrypted streams.</div>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="glass-panel p-6 relative z-10 text-center border-cyan-500/30">
+          <div class="w-8 h-8 rounded-full bg-cyan-500 text-black font-extrabold text-sm flex items-center justify-center mx-auto mb-4 font-mono shadow-lg shadow-cyan-500/30">3</div>
+          <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl mx-auto mb-4">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <h3 class="font-syne text-lg font-bold text-white mb-2">VYRA AI Engine</h3>
+          <p class="text-slate-400 text-xs mb-4">Advanced ML & Predictive Models:</p>
+          <ul class="text-xs text-slate-300 space-y-1.5 font-mono text-left bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+            <li class="flex items-center gap-2"><i class="fa-solid fa-atom text-cyan-400 text-[10px]"></i> Deep Learning Neural Nets</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-atom text-cyan-400 text-[10px]"></i> Anomaly Detection</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-atom text-cyan-400 text-[10px]"></i> RUL Life Prediction</li>
+          </ul>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="glass-panel p-6 relative z-10 text-center border-amber-500/30">
+          <div class="w-8 h-8 rounded-full bg-amber-500 text-black font-extrabold text-sm flex items-center justify-center mx-auto mb-4 font-mono shadow-lg shadow-amber-500/30">4</div>
+          <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl mx-auto mb-4">
+            <i class="fa-solid fa-desktop"></i>
+          </div>
+          <h3 class="font-syne text-lg font-bold text-white mb-2">Dashboard & Alerts</h3>
+          <p class="text-slate-400 text-xs mb-4">Actionable DISCOM Insights:</p>
+          <div class="text-xs text-slate-300 font-mono text-left bg-slate-900/60 p-3 rounded-lg border border-slate-800 space-y-1">
+            <div class="text-amber-400 font-bold">Instant Dispatch</div>
+            <div class="text-slate-400 text-[11px]">Real-time command center telemetry + automated mobile SMS warnings.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. IMPACT & KEY METRICS ==================== -->
+  <section id="impact" class="py-24 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Target Outcomes</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-bold text-white mt-4 mb-2">Measurable Impact</h2>
+        <p class="text-slate-400 text-sm">Projected performance goals based on smart grid simulation and pilot DISCOM modeling.</p>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        
+        <div class="glass-panel p-8 text-center border-emerald-500/30 relative">
+          <div class="font-syne text-4xl sm:text-6xl font-extrabold text-gradient-green mb-2">
+            <span class="counter-val" data-target="40" data-suffix="%">0%</span>
+          </div>
+          <div class="text-sm font-bold text-slate-200 uppercase tracking-wider font-mono">Lower O&M Costs</div>
+          <div class="text-xs text-slate-400 mt-2">Reduced emergency crew deployments via predictive servicing.</div>
+        </div>
+
+        <div class="glass-panel p-8 text-center border-blue-500/30 relative">
+          <div class="font-syne text-4xl sm:text-6xl font-extrabold text-gradient-blue mb-2">
+            <span class="counter-val" data-target="2" data-suffix="X">0X</span>
+          </div>
+          <div class="text-sm font-bold text-slate-200 uppercase tracking-wider font-mono">Transformer Lifespan</div>
+          <div class="text-xs text-slate-400 mt-2">Prevented oil insulation degradation & overload burnouts.</div>
+        </div>
+
+        <div class="glass-panel p-8 text-center border-cyan-500/30 relative">
+          <div class="font-syne text-4xl sm:text-6xl font-extrabold text-gradient-multi mb-2">
+            <span class="counter-val" data-target="100" data-prefix="<" data-suffix="ms">0ms</span>
+          </div>
+          <div class="text-sm font-bold text-slate-200 uppercase tracking-wider font-mono">Fault Detection</div>
+          <div class="text-xs text-slate-400 mt-2">Instantaneous anomaly capture across distribution networks.</div>
+        </div>
+
+        <div class="glass-panel p-8 text-center border-amber-500/30 relative">
+          <div class="font-syne text-4xl sm:text-6xl font-extrabold text-amber-400 mb-2">
+            <span class="counter-val" data-target="99.8" data-suffix="%">0%</span>
+          </div>
+          <div class="text-sm font-bold text-slate-200 uppercase tracking-wider font-mono">Predictive Accuracy</div>
+          <div class="text-xs text-slate-400 mt-2">Prevented catastrophic grid collapses before occurrence.</div>
+        </div>
+
+      </div>
+
+      <div class="mt-8 text-center">
+        <span class="inline-flex items-center gap-2 text-xs font-mono text-slate-400 bg-slate-900 px-4 py-2 rounded-full border border-slate-800">
+          <i class="fa-solid fa-circle-info text-blue-400"></i>
+          <span>Note: Values reflect projected target outcomes based on VYRA engineering models.</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. TRADITIONAL SYSTEM VS VYRA ==================== -->
+  <section class="py-24 bg-slate-950/60 relative border-t border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Comparative Advantage</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-bold text-white mt-4 mb-4">Traditional System vs VYRA</h2>
+        <p class="text-slate-400 text-base">How VYRA transforms power distribution from legacy manual maintenance to autonomous AI intelligence.</p>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="glass-panel overflow-hidden border-slate-800">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-900/80 font-syne text-sm">
+                <th class="p-4 sm:p-6 text-slate-300">Feature</th>
+                <th class="p-4 sm:p-6 text-slate-400 w-1/3">Traditional Reactive System</th>
+                <th class="p-4 sm:p-6 text-emerald-400 w-1/3 bg-emerald-500/10 font-bold border-l border-emerald-500/30">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                    <span>VYRA Smart Grid</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/80 text-xs sm:text-sm text-slate-300">
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-4 sm:p-6 font-semibold text-slate-200">Monitoring</td>
+                <td class="p-4 sm:p-6 text-slate-400">Periodic / Manual field visits</td>
+                <td class="p-4 sm:p-6 text-emerald-300 font-semibold bg-emerald-500/5 border-l border-emerald-500/20 flex items-center gap-2">
+                  <i class="fa-solid fa-check text-emerald-400"></i> Continuous Real-Time IoT Telemetry
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-4 sm:p-6 font-semibold text-slate-200">Fault Detection</td>
+                <td class="p-4 sm:p-6 text-slate-400">Discovered after consumer complaints</td>
+                <td class="p-4 sm:p-6 text-emerald-300 font-semibold bg-emerald-500/5 border-l border-emerald-500/20 flex items-center gap-2">
+                  <i class="fa-solid fa-check text-emerald-400"></i> AI-Based Sub-Second Predictive Alerting
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-4 sm:p-6 font-semibold text-slate-200">Transformer Maintenance</td>
+                <td class="p-4 sm:p-6 text-slate-400">Reactive repair post breakdown</td>
+                <td class="p-4 sm:p-6 text-emerald-300 font-semibold bg-emerald-500/5 border-l border-emerald-500/20 flex items-center gap-2">
+                  <i class="fa-solid fa-check text-emerald-400"></i> Remaining Useful Life (RUL) Scheduling
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-4 sm:p-6 font-semibold text-slate-200">Theft Detection</td>
+                <td class="p-4 sm:p-6 text-slate-400">Manual inspection raids</td>
+                <td class="p-4 sm:p-6 text-emerald-300 font-semibold bg-emerald-500/5 border-l border-emerald-500/20 flex items-center gap-2">
+                  <i class="fa-solid fa-check text-emerald-400"></i> Automated Energy-Balance Anomaly Flags
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-4 sm:p-6 font-semibold text-slate-200">Alert Routing</td>
+                <td class="p-4 sm:p-6 text-slate-400">Delayed phone calls</td>
+                <td class="p-4 sm:p-6 text-emerald-300 font-semibold bg-emerald-500/5 border-l border-emerald-500/20 flex items-center gap-2">
+                  <i class="fa-solid fa-check text-emerald-400"></i> Instant SMS & Command Center Dispatch
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-4 sm:p-6 font-semibold text-slate-200">Data Analysis</td>
+                <td class="p-4 sm:p-6 text-slate-400">Limited offline spreadsheets</td>
+                <td class="p-4 sm:p-6 text-emerald-300 font-semibold bg-emerald-500/5 border-l border-emerald-500/20 flex items-center gap-2">
+                  <i class="fa-solid fa-check text-emerald-400"></i> Deep Learning Neural Analytics
+                </td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-4 sm:p-6 font-semibold text-slate-200">Decision Making</td>
+                <td class="p-4 sm:p-6 text-slate-400">Manual intuition</td>
+                <td class="p-4 sm:p-6 text-emerald-300 font-semibold bg-emerald-500/5 border-l border-emerald-500/20 flex items-center gap-2">
+                  <i class="fa-solid fa-check text-emerald-400"></i> Autonomous Data-Driven Dispatch
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 6. INTERACTIVE VYRA DASHBOARD PREVIEW ==================== -->
+  <section id="dashboard" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Live Interactive Mockup</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-bold text-white mt-4 mb-2">VYRA Smart Grid Command Center</h2>
+        <p class="text-slate-400 text-sm">Experience the real-time DISCOM operator dashboard with live telemetry simulation.</p>
+      </div>
+
+      <!-- Command Center Window Frame -->
+      <div class="glass-panel border-slate-700 shadow-2xl overflow-hidden rounded-2xl">
+        
+        <!-- Dashboard Top Control Bar -->
+        <div class="bg-slate-900/90 px-6 py-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+            </div>
+            <span class="text-xs font-mono text-slate-400 ml-2">GRID NODE: <span class="text-emerald-400 font-bold">SUBSTATION-DEL-NORTH-04</span></span>
+          </div>
+
+          <!-- Dynamic Anomaly Toggle Button -->
+          <div class="flex items-center gap-3">
+            <button id="toggleAnomalyBtn" class="px-4 py-2 text-xs font-semibold rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-bolt-lightning"></i>
+              <span>Simulate Grid Anomaly / Theft</span>
+            </button>
+            <button class="btn-primary text-xs py-2 px-4 trigger-emergency bg-rose-600 hover:bg-rose-500 shadow-rose-900/40">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>Emergency Notification</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dashboard Grid Body -->
+        <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 bg-slate-950/80">
+          
+          <!-- Column 1: Transformer Health Card -->
+          <div class="glass-panel p-5 border-slate-800 space-y-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-mono uppercase text-slate-400 block">TRANSFORMER UNIT</span>
+                <h3 class="font-syne font-bold text-lg text-white">TR-DEL-4092</h3>
+              </div>
+              <span id="transformerStatusText" class="text-xs font-semibold uppercase tracking-wider text-emerald-400 px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20">
+                HEALTHY
+              </span>
+            </div>
+
+            <!-- RUL Animated SVG Gauge -->
+            <div class="relative w-40 h-40 mx-auto flex items-center justify-center">
+              <svg class="w-full h-full" viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="rulGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#00ff9d"/>
+                    <stop offset="100%" stop-color="#3b82f6"/>
+                  </linearGradient>
+                </defs>
+                <circle class="rul-circle-bg" cx="50" cy="50" r="45"></circle>
+                <circle id="rulCircleVal" class="rul-circle-val" cx="50" cy="50" r="45"></circle>
+              </svg>
+              <div class="absolute text-center">
+                <span id="rulPercentageText" class="font-syne font-extrabold text-3xl text-white block">87%</span>
+                <span class="text-[10px] font-mono text-slate-400 uppercase">Remaining Useful Life (RUL)</span>
+              </div>
+            </div>
+
+            <!-- Health Sub-Metrics -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-center">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">TEMP</span>
+                <span id="valTemperature" class="font-mono text-base font-bold text-amber-400">48.5 °C</span>
+              </div>
+              <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-center">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">LOAD</span>
+                <span class="font-mono text-base font-bold text-cyan-400">74.2%</span>
+              </div>
+              <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-center">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">VIBRATION</span>
+                <span id="valVibration" class="font-mono text-base font-bold text-blue-400">1.24 mm/s</span>
+              </div>
+              <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-center">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">VOLTAGE</span>
+                <span id="valVoltage" class="font-mono text-base font-bold text-emerald-400">238.4 V</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Real-Time Chart & Telemetry Stream -->
+          <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Metric Selector Tabs -->
+            <div class="glass-panel p-5 border-slate-800">
+              <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-chart-line text-emerald-400"></i>
+                  <h4 class="font-syne font-bold text-slate-200 text-sm">Real-Time Telemetry Stream</h4>
+                </div>
+                
+                <div class="flex items-center gap-2 text-xs font-mono">
+                  <button data-metric="voltage" class="metric-tab px-3 py-1.5 rounded-md border border-emerald-500 bg-emerald-500/20 text-emerald-400 transition-all">Voltage</button>
+                  <button data-metric="temperature" class="metric-tab px-3 py-1.5 rounded-md border border-transparent text-slate-400 hover:text-slate-200 transition-all">Temp</button>
+                  <button data-metric="vibration" class="metric-tab px-3 py-1.5 rounded-md border border-transparent text-slate-400 hover:text-slate-200 transition-all">Vibration</button>
+                  <button data-metric="current" class="metric-tab px-3 py-1.5 rounded-md border border-transparent text-slate-400 hover:text-slate-200 transition-all">Current</button>
+                </div>
+              </div>
+
+              <!-- Canvas Chart Container -->
+              <div class="h-64 w-full relative">
+                <canvas id="telemetryChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Bottom Sub-Grid: Energy Balance & Live Alert Feed -->
+            <div class="grid md:grid-cols-2 gap-6">
+              
+              <!-- Energy Balance -->
+              <div class="glass-panel p-5 border-slate-800 space-y-4">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-syne font-bold text-sm text-slate-200">Energy Balance & Loss</h4>
+                  <i class="fa-solid fa-scale-balanced text-cyan-400 text-sm"></i>
+                </div>
+
+                <div id="theftAnomalyBadge" class="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span>Energy Balance Normal</span>
+                </div>
+
+                <div class="space-y-2 text-xs font-mono">
+                  <div class="flex justify-between py-1 border-b border-slate-800">
+                    <span class="text-slate-400">Energy Suppled:</span>
+                    <span class="text-slate-200 font-bold">1,450 kWh</span>
+                  </div>
+                  <div class="flex justify-between py-1 border-b border-slate-800">
+                    <span class="text-slate-400">Energy Consumed:</span>
+                    <span class="text-slate-200 font-bold">1,412 kWh</span>
+                  </div>
+                  <div class="flex justify-between py-1">
+                    <span class="text-slate-400">Technical Loss:</span>
+                    <span class="text-emerald-400 font-bold">2.6% (Acceptable)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Alert Feed -->
+              <div class="glass-panel p-5 border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-syne font-bold text-sm text-slate-200">Live Alert Stream</h4>
+                  <span class="text-[10px] font-mono text-emerald-400 animate-pulse">● LIVE TICK</span>
+                </div>
+
+                <div id="liveAlertFeed" class="space-y-2 max-h-36 overflow-y-auto pr-1">
+                  <div class="p-2.5 rounded-lg border bg-emerald-500/10 border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between">
+                    <span>✓ Grid operating normally — TR-DEL-4092</span>
+                    <span class="text-[10px] text-slate-400 font-mono">Just Now</span>
+                  </div>
+                  <div class="p-2.5 rounded-lg border bg-amber-500/10 border-amber-500/30 text-amber-300 text-xs flex items-center justify-between">
+                    <span>⚠ Transformer temperature rising (54.2°C)</span>
+                    <span class="text-[10px] text-slate-400 font-mono">2m ago</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 8. FUTURE VISION & INDIA SMART GRID MAP ==================== -->
+  <section id="future" class="py-24 bg-slate-950/60 relative border-t border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Scalable Roadmap</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-bold text-white mt-4 mb-4">Future Vision</h2>
+        <p class="text-slate-400 text-base">Expanding VYRA across smart cities, renewable energy microgrids, and nationwide Indian DISCOM networks.</p>
+      </div>
+
+      <!-- 3 Futuristic Cards -->
+      <div class="grid md:grid-cols-3 gap-6 mb-16">
+        
+        <div class="glass-panel p-6 border-slate-800">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl mb-4">
+            <i class="fa-solid fa-city"></i>
+          </div>
+          <h3 class="font-syne text-xl font-bold text-white mb-2">Smart City Integration</h3>
+          <p class="text-slate-400 text-sm">
+            Deep API integration with municipal smart-city command centers, traffic lighting, and EV charging station load balancers.
+          </p>
+        </div>
+
+        <div class="glass-panel p-6 border-slate-800">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl mb-4">
+            <i class="fa-solid fa-solar-panel"></i>
+          </div>
+          <h3 class="font-syne text-xl font-bold text-white mb-2">Renewable Energy Support</h3>
+          <p class="text-slate-400 text-sm">
+            Bi-directional telemetry for solar farms, wind turbines, and Battery Energy Storage Systems (BESS) microgrid stability.
+          </p>
+        </div>
+
+        <div class="glass-panel p-6 border-slate-800">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-4">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <h3 class="font-syne text-xl font-bold text-white mb-2">Nationwide Deployment</h3>
+          <p class="text-slate-400 text-sm">
+            Architected to scale across State DISCOMs nationwide, protecting over 500,000 distribution transformers across India.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Interactive India Map Container -->
+      <div class="glass-panel p-8 border-slate-800">
+        <div class="text-center mb-8">
+          <h3 class="font-syne text-2xl font-bold text-white">Nationwide Grid Node Network</h3>
+          <p class="text-slate-400 text-xs mt-1">Hover over smart grid nodes to inspect regional DISCOM performance stats.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8 items-center">
+          
+          <!-- Map SVG -->
+          <div class="lg:col-span-2 relative flex justify-center py-4">
+            <svg viewBox="0 0 500 550" class="w-full max-w-md h-auto">
+              <!-- Outline Path of India (Stylized Geometry) -->
+              <path d="M 220 40 L 290 60 L 320 120 L 370 140 L 440 180 L 400 230 L 350 250 L 320 310 L 260 420 L 210 500 L 170 420 L 140 330 L 120 260 L 90 220 L 130 160 L 160 110 Z" 
+                    fill="rgba(15, 23, 42, 0.8)" 
+                    stroke="rgba(16, 185, 129, 0.4)" 
+                    stroke-width="2" 
+                    class="cyber-grid-bg"/>
+
+              <!-- Interconnecting Energy Grid Vectors -->
+              <line x1="210" y1="120" x2="160" y2="240" stroke="rgba(0, 255, 157, 0.3)" stroke-width="1.5" stroke-dasharray="4"/>
+              <line x1="210" y1="120" x2="350" y2="260" stroke="rgba(0, 255, 157, 0.3)" stroke-width="1.5" stroke-dasharray="4"/>
+              <line x1="160" y1="240" x2="210" y2="360" stroke="rgba(0, 255, 157, 0.3)" stroke-width="1.5" stroke-dasharray="4"/>
+              <line x1="350" y1="260" x2="210" y2="360" stroke="rgba(0, 255, 157, 0.3)" stroke-width="1.5" stroke-dasharray="4"/>
+              <line x1="210" y1="360" x2="210" y2="480" stroke="rgba(0, 255, 157, 0.3)" stroke-width="1.5" stroke-dasharray="4"/>
+
+              <!-- Nodes -->
+              <!-- Delhi -->
+              <g class="map-node" data-city="delhi">
+                <circle cx="210" cy="120" r="7" fill="#10b981" />
+                <circle cx="210" cy="120" r="14" fill="rgba(16, 185, 129, 0.3)" class="animate-ping"/>
+                <text x="222" y="124" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Delhi NCR</text>
+              </g>
+
+              <!-- Varanasi -->
+              <g class="map-node" data-city="varanasi">
+                <circle cx="270" cy="180" r="6" fill="#3b82f6" />
+                <text x="282" y="184" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Varanasi</text>
+              </g>
+
+              <!-- Mumbai -->
+              <g class="map-node" data-city="mumbai">
+                <circle cx="160" cy="240" r="6" fill="#10b981" />
+                <text x="95" y="244" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Mumbai</text>
+              </g>
+
+              <!-- Kolkata -->
+              <g class="map-node" data-city="kolkata">
+                <circle cx="350" cy="260" r="6" fill="#06b6d4" />
+                <text x="362" y="264" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Kolkata</text>
+              </g>
+
+              <!-- Hyderabad -->
+              <g class="map-node" data-city="hyderabad">
+                <circle cx="210" cy="360" r="6" fill="#10b981" />
+                <text x="222" y="364" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Hyderabad</text>
+              </g>
+
+              <!-- Bengaluru -->
+              <g class="map-node" data-city="bengaluru">
+                <circle cx="200" cy="430" r="6" fill="#10b981" />
+                <text x="110" y="434" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Bengaluru</text>
+              </g>
+
+              <!-- Chennai -->
+              <g class="map-node" data-city="chennai">
+                <circle cx="240" cy="450" r="6" fill="#3b82f6" />
+                <text x="252" y="454" fill="#ffffff" font-size="11" font-weight="bold" font-family="sans-serif">Chennai</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Selected Regional Info Panel -->
+          <div class="glass-panel p-6 border-emerald-500/30 bg-slate-900/90 space-y-4">
+            <div class="border-b border-slate-800 pb-3">
+              <span class="text-[10px] font-mono uppercase text-emerald-400">DISCOM ZONE</span>
+              <h4 id="mapNodeTitle" class="font-syne text-xl font-bold text-white">Delhi NCR Smart Zone</h4>
+              <p id="mapNodeDiscom" class="text-xs text-slate-400">TPDDL & BSES Rajdhani</p>
+            </div>
+
+            <div class="space-y-3 font-mono text-xs">
+              <div class="flex justify-between py-1 border-b border-slate-800/60">
+                <span class="text-slate-400">Active Transformers:</span>
+                <span id="mapNodeUnits" class="text-slate-200 font-bold">1,420 Active Units</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-800/60">
+                <span class="text-slate-400">Grid Health Score:</span>
+                <span id="mapNodeHealth" class="text-emerald-400 font-bold">98.4%</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <span class="text-slate-400">Losses Prevented:</span>
+                <span id="mapNodeLosses" class="text-cyan-400 font-bold">3.8 MW/day</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 9. TECHNOLOGY STACK ==================== -->
+  <section class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Engineering Foundation</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-bold text-white mt-4 mb-4">Technology Stack</h2>
+        <p class="text-slate-400 text-base">Next-generation hardware, edge computing, and artificial intelligence powering VYRA.</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-emerald-500/40 transition-all">
+          <i class="fa-solid fa-microchip text-emerald-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">IoT Sensors</h4>
+          <p class="text-slate-400 text-xs mt-1">Multi-parameter edge probes.</p>
+        </div>
+
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-blue-500/40 transition-all">
+          <i class="fa-solid fa-server text-blue-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">Cloud/Edge Computing</h4>
+          <p class="text-slate-400 text-xs mt-1">Distributed microservices.</p>
+        </div>
+
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-cyan-500/40 transition-all">
+          <i class="fa-solid fa-brain text-cyan-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">Artificial Intelligence</h4>
+          <p class="text-slate-400 text-xs mt-1">Autonomous neural agents.</p>
+        </div>
+
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-emerald-500/40 transition-all">
+          <i class="fa-solid fa-network-wired text-emerald-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">Machine Learning</h4>
+          <p class="text-slate-400 text-xs mt-1">Pattern detection models.</p>
+        </div>
+
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-blue-500/40 transition-all">
+          <i class="fa-solid fa-layer-group text-blue-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">Deep Learning</h4>
+          <p class="text-slate-400 text-xs mt-1">Time-series forecasting.</p>
+        </div>
+
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-cyan-500/40 transition-all">
+          <i class="fa-solid fa-chart-line text-cyan-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">Predictive Analytics</h4>
+          <p class="text-slate-400 text-xs mt-1">Remaining Useful Life (RUL).</p>
+        </div>
+
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-emerald-500/40 transition-all">
+          <i class="fa-solid fa-gauge-high text-emerald-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">Real-Time Viz</h4>
+          <p class="text-slate-400 text-xs mt-1">Chart.js & WebGL stream.</p>
+        </div>
+
+        <div class="glass-panel p-5 text-center border-slate-800 hover:border-amber-500/40 transition-all">
+          <i class="fa-solid fa-mobile-screen-button text-amber-400 text-2xl mb-3"></i>
+          <h4 class="font-syne font-bold text-white text-sm">Mobile/SMS Alerts</h4>
+          <p class="text-slate-400 text-xs mt-1">Instant field dispatch.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 10. CALL-TO-ACTION SECTION ==================== -->
+  <section class="py-20 relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass-panel p-10 md:p-16 text-center border-emerald-500/40 relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"></div>
+
+        <h2 class="font-syne font-extrabold text-3xl sm:text-5xl text-white mb-6 relative z-10">
+          “Build a Smarter, Safer & More Reliable Power Grid with VYRA.”
+        </h2>
+        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-8 relative z-10">
+          Empower your distribution network with sub-second predictive maintenance and automated theft detection.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+          <button class="btn-primary text-base py-3.5 px-8 trigger-request-demo">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Request a Demo</span>
+          </button>
+          <a href="#dashboard" class="btn-secondary text-base py-3.5 px-8">
+            <i class="fa-solid fa-chart-line text-emerald-400"></i>
+            <span>Explore Dashboard</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 11. FOOTER ==================== -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+        
+        <!-- Brand Summary -->
+        <div class="space-y-4 md:col-span-2">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center text-black font-bold">
+              <i class="fa-solid fa-bolt-lightning text-lg"></i>
+            </div>
+            <span class="font-syne font-extrabold text-2xl text-white">VYRA</span>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed max-w-md">
+            “Powering India’s Future with Artificial Intelligence”
+          </p>
+          <div class="text-xs text-slate-400 space-y-1 font-mono pt-2">
+            <div><span class="text-emerald-400 font-bold">Team:</span> Team Neuro Forge</div>
+            <div><span class="text-emerald-400 font-bold">Team Leader:</span> Srijan Kumar Gupta</div>
+            <div><span class="text-emerald-400 font-bold">Institution:</span> Ashoka Institute of Technology & Management</div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-syne font-bold text-white text-sm mb-4">Quick Navigation</h4>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><a href="#hero" class="hover:text-emerald-400 transition-colors">Home</a></li>
+            <li><a href="#challenges" class="hover:text-emerald-400 transition-colors">Challenges</a></li>
+            <li><a href="#architecture" class="hover:text-emerald-400 transition-colors">How It Works</a></li>
+            <li><a href="#dashboard" class="hover:text-emerald-400 transition-colors">Command Center</a></li>
+            <li><a href="#impact" class="hover:text-emerald-400 transition-colors">Impact & Metrics</a></li>
+            <li><a href="#future" class="hover:text-emerald-400 transition-colors">Future Vision</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Accreditation -->
+        <div>
+          <h4 class="font-syne font-bold text-white text-sm mb-4">Contact & Support</h4>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li class="flex items-center gap-2"><i class="fa-solid fa-envelope text-emerald-400"></i> neuroforge.vyra@ashoka.edu.in</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-emerald-400"></i> Varanasi, Uttar Pradesh, India</li>
+            <li class="flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-emerald-400"></i> Innovation Project 2026</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 font-mono gap-4">
+        <div>&copy; 2026 VYRA by Team Neuro Forge. All rights reserved.</div>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-emerald-400">Privacy Policy</a>
+          <a href="#" class="hover:text-emerald-400">Terms of Service</a>
+          <a href="#" class="hover:text-emerald-400">DISCOM Documentation</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL 1: REQUEST DEMO MODAL ==================== -->
+  <div id="requestDemoModal" class="fixed inset-0 z-50 hidden modal-overlay flex items-center justify-center p-4">
+    <div class="glass-panel max-w-lg w-full p-6 sm:p-8 border-emerald-500/40 relative shadow-2xl animate-fade-in">
+      <button class="close-modal absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-xl">
+          <i class="fa-solid fa-paper-plane"></i>
+        </div>
+        <h3 class="font-syne font-bold text-2xl text-white">Request VYRA Demo</h3>
+        <p class="text-slate-400 text-xs mt-1">Schedule a customized smart grid telemetry demo for your DISCOM or institution.</p>
+      </div>
+
+      <form id="demoForm" class="space-y-4 text-xs font-mono">
+        <div>
+          <label class="block text-slate-300 mb-1">Full Name *</label>
+          <input type="text" id="demoName" required placeholder="e.g. Srijan Kumar Gupta" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">Organization / DISCOM *</label>
+          <input type="text" id="demoOrg" required placeholder="e.g. PuVVNL / Smart City Cell" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">Role *</label>
+          <select required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="Grid Operator">Grid Operator</option>
+            <option value="DISCOM Engineer">DISCOM Engineer</option>
+            <option value="Investor">Investor</option>
+            <option value="Smart City Planner">Smart City Planner</option>
+            <option value="Energy Decision Maker">Energy Decision Maker</option>
+            <option value="Faculty / Student Evaluator">Faculty / Student Evaluator</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">Email Address *</label>
+          <input type="email" required placeholder="name@discom.gov.in" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+        </div>
+        <button type="submit" class="btn-primary w-full justify-center py-3 text-sm mt-2">
+          <span>Submit Request</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 2: EMERGENCY NOTIFICATION MODAL ==================== -->
+  <div id="emergencyModal" class="fixed inset-0 z-50 hidden modal-overlay flex items-center justify-center p-4">
+    <div class="glass-panel max-w-lg w-full p-6 sm:p-8 border-rose-500/40 relative shadow-2xl animate-fade-in">
+      <button class="close-modal absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-400 flex items-center justify-center mx-auto mb-3 text-2xl animate-pulse">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="font-syne font-bold text-2xl text-white">Emergency Dispatch Override</h3>
+        <p class="text-slate-400 text-xs mt-1">Initiate critical alert broadcast to field DISCOM engineers and mobile subscribers.</p>
+      </div>
+
+      <div class="bg-rose-950/40 border border-rose-500/30 p-4 rounded-xl space-y-2 text-xs font-mono text-rose-200 mb-6">
+        <div class="flex justify-between">
+          <span>TARGET UNIT:</span>
+          <span class="font-bold text-white">TR-DEL-4092</span>
+        </div>
+        <div class="flex justify-between">
+          <span>LOCATION:</span>
+          <span class="font-bold text-white">Substation 04 (Zone B)</span>
+        </div>
+        <div class="flex justify-between">
+          <span>ANOMALY REASON:</span>
+          <span class="font-bold text-rose-400">Rapid Thermal Spike + Theft Risk</span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <button id="btnDispatchEmergency" class="w-full py-3 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm shadow-lg shadow-rose-950/50 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-tower-cell"></i>
+          <span>Dispatch Instant Alert to DISCOM Team</span>
+        </button>
+        <button class="w-full py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium close-modal">
+          Cancel Override
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/grid-canvas.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/india-map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
