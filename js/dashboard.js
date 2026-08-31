@@ -28,6 +28,7 @@ class VyraDashboard {
     this.startLiveStream();
     this.setupEventListeners();
     this.setupUserInputListeners();
+    this.setupSensorToggleListeners();
   }
 
   initHistoryBuffer() {
@@ -646,6 +647,48 @@ class VyraDashboard {
     if (alertFeed.children.length > 6) {
       alertFeed.removeChild(alertFeed.lastChild);
     }
+  }
+
+  // ==================== 8. SENSOR TOGGLE & SEPARATE ACCESS ====================
+  setupSensorToggleListeners() {
+    const toggleBtns = document.querySelectorAll('.sensor-toggle-btn');
+    const sensorCards = document.querySelectorAll('[data-sensor-card]');
+    const gridContainer = document.getElementById('sensorGridContainer');
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetSensor = e.currentTarget.dataset.sensor;
+
+        // Update button states
+        toggleBtns.forEach(b => {
+          b.className = 'sensor-toggle-btn px-2.5 py-1 rounded-md border border-transparent text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1';
+        });
+
+        e.currentTarget.className = 'sensor-toggle-btn px-2.5 py-1 rounded-md border border-emerald-500 bg-emerald-500/20 text-emerald-400 font-bold transition-all flex items-center gap-1';
+
+        // Filter and arrange cards
+        if (targetSensor === 'all') {
+          sensorCards.forEach(card => card.classList.remove('hidden'));
+          if (gridContainer) {
+            gridContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+          }
+        } else {
+          sensorCards.forEach(card => {
+            if (card.dataset.sensorCard === targetSensor) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+          if (gridContainer) {
+            gridContainer.className = 'grid grid-cols-1 gap-4';
+          }
+        }
+
+        // Trigger immediate resize for chart instances
+        setTimeout(() => this.resizeAllCharts(), 60);
+      });
+    });
   }
 }
 
