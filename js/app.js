@@ -68,8 +68,14 @@ function setupTabNavigation() {
       }
 
       // Re-trigger Chart.js resize if command center tab is opened
-      if (targetTabId === 'tab-command' && window.vyraDashboard && window.vyraDashboard.chart) {
-        setTimeout(() => window.vyraDashboard.chart.resize(), 150);
+      if (targetTabId === 'tab-command' && window.vyraDashboard) {
+        setTimeout(() => {
+          if (typeof window.vyraDashboard.resizeAllCharts === 'function') {
+            window.vyraDashboard.resizeAllCharts();
+          } else if (window.vyraDashboard.chart) {
+            window.vyraDashboard.chart.resize();
+          }
+        }, 150);
       }
     });
   });
