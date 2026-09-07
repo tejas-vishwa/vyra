@@ -249,3 +249,19 @@ h1, h2, h3, .font-syne {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+
+/* Sensor Card & Toggle Styles */
+.sensor-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sensor-card:hover {
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 6px 20px -6px rgba(16, 185, 129, 0.15);
+}
+
+.sensor-toggle-btn {
+  cursor: pointer;
+  user-select: none;
+}
+
