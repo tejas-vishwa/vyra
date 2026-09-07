@@ -35,6 +35,26 @@ The output is bounded $\text{HI} \in [5\%, 100\%]$ and continuously feeds into t
 
 ---
 
+## ESP32 IoT Hardware & Sensor Integration
+
+The project now includes ready-to-flash IoT firmware located under [`esp32_firmware/`](file:///C:/Users/dell/.gemini/antigravity/worktrees/vyra/esp32_sensor_web_dashboard/esp32_firmware):
+
+1. **Hardware Supported**:
+   - **ESP32 DevKit** (30-pin or 38-pin).
+   - **Voltage Sensor**: ZMPT101B (AC Mains) or 0-25V Voltage Divider Module (DC).
+   - **Current Sensor**: ACS712 (5A/20A/30A) or SCT-013 Split-Core CT.
+   - **Pins**: **GPIO 34** (Voltage ADC1) and **GPIO 35** (Current ADC1) to prevent Wi-Fi channel contention.
+2. **Dual Website Outputs**:
+   - **Self-Hosted Embedded Dashboard**: Visit `http://<esp32-ip>/` or `http://vyra-esp32.local/` directly from your phone/PC on the same Wi-Fi.
+   - **VYRA Command Center Bridge**: Connect via `Connect ESP32 (WiFi)` in the web dashboard to stream live physical voltage, current, and calculate real-time Transformer Health Index ($HI\%$).
+3. **Firmware Files**:
+   - [`esp32_sensor_monitor.ino`](file:///C:/Users/dell/.gemini/antigravity/worktrees/vyra/esp32_sensor_web_dashboard/esp32_firmware/esp32_sensor_monitor.ino): Main Arduino sketch with True-RMS sampling and REST API.
+   - [`config.h`](file:///C:/Users/dell/.gemini/antigravity/worktrees/vyra/esp32_sensor_web_dashboard/esp32_firmware/config.h): Wi-Fi credentials and sensor calibration parameters.
+   - [`web_page.h`](file:///C:/Users/dell/.gemini/antigravity/worktrees/vyra/esp32_sensor_web_dashboard/esp32_firmware/web_page.h): Responsive embedded dark-mode dashboard in PROGMEM.
+   - [`README.md`](file:///C:/Users/dell/.gemini/antigravity/worktrees/vyra/esp32_sensor_web_dashboard/esp32_firmware/README.md): Pinout diagrams, safety instructions, and step-by-step flashing guide.
+
+---
+
 ## Deployment & Local Preview
 
 ### Deployment on Vercel

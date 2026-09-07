@@ -5,6 +5,11 @@ class VyraDashboard {
     this.activeMetric = 'voltage';
     this.isAnomalyActive = false;
     this.isUserFeedMode = false;
+    this.isEsp32Active = false;
+    this.esp32Poller = null;
+    this.esp32FailCount = 0;
+    this.esp32PacketCount = 0;
+    this.esp32Ip = localStorage.getItem('vyra_esp32_ip') || '192.168.1.150';
     this.telemetryHistory = {
       labels: [],
       voltage: [],
@@ -18,6 +23,7 @@ class VyraDashboard {
     this.startLiveStream();
     this.setupEventListeners();
     this.setupUserInputListeners();
+    this.setupEsp32Bridge();
   }
 
   initChart() {
@@ -228,7 +234,7 @@ class VyraDashboard {
 
   startLiveStream() {
     setInterval(() => {
-      if (this.isUserFeedMode) return; // Skip auto ticks in manual user feed mode
+      if (this.isUserFeedMode || this.isEsp32Active) return; // Skip simulated ticks when manual user feed or physical ESP32 mode is active
 
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -388,6 +394,203 @@ class VyraDashboard {
     if (alertFeed.children.length > 6) {
       alertFeed.removeChild(alertFeed.lastChild);
     }
+  }
+
+  /* ESP32 Hardware Bridge Methods */
+  setupEsp32Bridge() {
+    const btnToggleBar = document.getElementById('btnToggleEsp32Bar');
+    const bridgePanel = document.getElementById('esp32BridgePanel');
+    const inputIp = document.getElementById('inputEsp32Ip');
+    const btnConnect = document.getElementById('btnConnectEsp32');
+    const linkDashboard = document.getElementById('linkEsp32Dashboard');
+
+    if (inputIp) {
+      inputIp.value = this.esp32Ip;
+      inputIp.addEventListener('input', () => {
+        const val = inputIp.value.trim();
+        if (linkDashboard) {
+          linkDashboard.href = val.startsWith('http') ? val : `http://${val}`;
+        }
+      });
+    }
+
+    if (linkDashboard && inputIp) {
+      linkDashboard.href = `http://${this.esp32Ip}`;
+    }
+
+    if (btnToggleBar && bridgePanel) {
+      btnToggleBar.addEventListener('click', () => {
+        bridgePanel.classList.toggle('hidden');
+      });
+    }
+
+    if (btnConnect) {
+      btnConnect.addEventListener('click', () => {
+        if (this.isEsp32Active || this.esp32Poller) {
+          this.disconnectEsp32();
+        } else {
+          const ip = (inputIp?.value || '192.168.1.150').trim();
+          this.connectEsp32(ip);
+        }
+      });
+    }
+  }
+
+  connectEsp32(targetIp) {
+    const statusBadge = document.getElementById('esp32StatusBadge');
+    const statusText = document.getElementById('esp32StatusText');
+    const dot = document.getElementById('esp32Dot');
+    const labelConnect = document.getElementById('labelConnectEsp32');
+    const iconConnect = document.getElementById('iconConnectEsp32');
+    const linkDashboard = document.getElementById('linkEsp32Dashboard');
+
+    let cleanHost = targetIp.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    this.esp32Ip = cleanHost;
+    localStorage.setItem('vyra_esp32_ip', cleanHost);
+
+    if (linkDashboard) {
+      linkDashboard.href = `http://${cleanHost}`;
+    }
+
+    if (statusBadge) {
+      statusBadge.textContent = 'CONNECTING...';
+      statusBadge.className = 'text-amber-400 font-bold';
+    }
+    if (dot) {
+      dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping';
+    }
+    if (statusText) {
+      statusText.textContent = `Polling http://${cleanHost}/api/data...`;
+    }
+    if (labelConnect) labelConnect.textContent = 'Disconnect ESP32';
+    if (iconConnect) iconConnect.className = 'fa-solid fa-spinner fa-spin';
+
+    this.esp32FailCount = 0;
+    this.esp32PacketCount = 0;
+
+    // Immediately poll once, then every 1000ms
+    this.pollEsp32Data(cleanHost);
+    this.esp32Poller = setInterval(() => {
+      this.pollEsp32Data(cleanHost);
+    }, 1000);
+  }
+
+  async pollEsp32Data(host) {
+    const statusBadge = document.getElementById('esp32StatusBadge');
+    const statusText = document.getElementById('esp32StatusText');
+    const dot = document.getElementById('esp32Dot');
+    const iconConnect = document.getElementById('iconConnectEsp32');
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+      const url = `http://${host}/api/data`;
+
+      const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+
+      this.esp32FailCount = 0;
+      this.esp32PacketCount++;
+
+      if (!this.isEsp32Active) {
+        this.isEsp32Active = true;
+        this.injectAlert(`🔌 ESP32 Connected! Streaming live hardware telemetry from ${host}`, 'emerald');
+      }
+
+      if (statusBadge) {
+        statusBadge.textContent = 'LIVE HARDWARE STREAM';
+        statusBadge.className = 'text-emerald-400 font-bold';
+      }
+      if (dot) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#10b981]';
+      }
+      if (iconConnect) iconConnect.className = 'fa-solid fa-link';
+      if (statusText) {
+        statusText.textContent = `Streaming: ${data.voltage.toFixed(1)}V, ${data.current.toFixed(2)}A | Power: ${data.power.toFixed(1)}W | RSSI: ${data.rssi || '--'} dBm (Packets: ${this.esp32PacketCount})`;
+      }
+
+      // Sync form input fields
+      const elInputVolt = document.getElementById('inputVolt');
+      const elInputCurr = document.getElementById('inputCurr');
+      if (elInputVolt) elInputVolt.value = data.voltage.toFixed(1);
+      if (elInputCurr) elInputCurr.value = data.current.toFixed(2);
+
+      // Read baseline temp & vib from form
+      const temp = parseFloat(document.getElementById('inputTemp')?.value || 48.5);
+      const vib = parseFloat(document.getElementById('inputVib')?.value || 1.24);
+      const pDga = parseFloat(document.getElementById('inputDga')?.value || 0);
+      const pMoisture = parseFloat(document.getElementById('inputMoisture')?.value || 0);
+
+      const mathResult = this.calculateHealthIndex(temp, vib, data.voltage, data.current, pDga, pMoisture);
+
+      // Push to telemetry history
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      this.telemetryHistory.labels.push(timeStr);
+      this.telemetryHistory.voltage.push(data.voltage);
+      this.telemetryHistory.temperature.push(temp);
+      this.telemetryHistory.vibration.push(vib);
+      this.telemetryHistory.current.push(data.current);
+
+      if (this.telemetryHistory.labels.length > this.maxDataPoints) {
+        this.telemetryHistory.labels.shift();
+        this.telemetryHistory.voltage.shift();
+        this.telemetryHistory.temperature.shift();
+        this.telemetryHistory.vibration.shift();
+        this.telemetryHistory.current.shift();
+      }
+
+      this.updateTelemetryValues(data.voltage, temp, vib, data.current, mathResult);
+      if (this.chart) this.chart.update('none');
+
+    } catch (err) {
+      this.esp32FailCount++;
+      if (this.esp32FailCount >= 3) {
+        if (statusBadge) {
+          statusBadge.textContent = 'UNREACHABLE / TIMEOUT';
+          statusBadge.className = 'text-rose-400 font-bold';
+        }
+        if (dot) {
+          dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse';
+        }
+        if (statusText) {
+          statusText.textContent = `Cannot reach http://${host}/api/data. Ensure ESP32 and this device are on the same Wi-Fi.`;
+        }
+      }
+    }
+  }
+
+  disconnectEsp32() {
+    if (this.esp32Poller) {
+      clearInterval(this.esp32Poller);
+      this.esp32Poller = null;
+    }
+    this.isEsp32Active = false;
+
+    const statusBadge = document.getElementById('esp32StatusBadge');
+    const statusText = document.getElementById('esp32StatusText');
+    const dot = document.getElementById('esp32Dot');
+    const labelConnect = document.getElementById('labelConnectEsp32');
+    const iconConnect = document.getElementById('iconConnectEsp32');
+
+    if (statusBadge) {
+      statusBadge.textContent = 'DISCONNECTED';
+      statusBadge.className = 'text-slate-400 font-bold';
+    }
+    if (dot) {
+      dot.className = 'w-2.5 h-2.5 rounded-full bg-slate-500';
+    }
+    if (statusText) {
+      statusText.textContent = 'Enter ESP32 IP or mDNS hostname to read real-time voltage and current sensors';
+    }
+    if (labelConnect) labelConnect.textContent = 'Connect ESP32';
+    if (iconConnect) iconConnect.className = 'fa-solid fa-plug';
+
+    this.injectAlert('Disconnected from ESP32. Resumed simulated IoT telemetry stream.', 'emerald');
   }
 }
 
